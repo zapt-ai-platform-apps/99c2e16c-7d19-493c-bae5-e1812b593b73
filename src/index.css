@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom styles */
+body {
+  direction: rtl;
+  font-family: 'Tajawal', sans-serif;
+}
+
+textarea::placeholder {
+  text-align: right;
+}
