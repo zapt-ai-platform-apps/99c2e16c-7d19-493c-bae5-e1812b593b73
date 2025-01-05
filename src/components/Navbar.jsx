@@ -8,7 +8,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white shadow-md p-4 flex justify-between items-center">
-      <Link to="/" className="text-xl font-bold">مولد الأدوات</Link>
+      <Link to="/" className="text-xl font-bold">مُنشئ المواقع</Link>
       <button onClick={changeLanguage} className="text-blue-500">
         English
       </button>
