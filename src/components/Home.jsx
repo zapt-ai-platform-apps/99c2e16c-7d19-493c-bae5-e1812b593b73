@@ -11,9 +11,9 @@ export default function Home() {
     if (!description) return;
     setLoading(true);
     try {
-      const result = await createEvent('generate_code', {
-        prompt: description,
-        language: 'arabic'
+      const result = await createEvent('chatgpt_request', {
+        prompt: `يرجى إنشاء مشروع متقدم لأداة ذكاء اصطناعي باللغة العربية بناءً على الوصف التالي:\n${description}\n\nيرجى تقديم ملفات المشروع بتنسيق JSON كمصفوفة من الكائنات تحتوي على الخصائص "name" و "content".`,
+        response_type: 'json'
       });
       localStorage.setItem('projectData', JSON.stringify(result));
       navigate('/preview');
@@ -35,7 +35,7 @@ export default function Home() {
       />
       <button
         onClick={generateProject}
-        className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer"
+        className={`bg-blue-500 text-white px-4 py-2 rounded cursor-pointer ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
         disabled={loading}
       >
         {loading ? 'جارٍ الإنشاء...' : 'إنشاء المشروع'}

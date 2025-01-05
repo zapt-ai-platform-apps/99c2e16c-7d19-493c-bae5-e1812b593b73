@@ -6,14 +6,14 @@ export default function Preview() {
   const navigate = useNavigate();
   const projectData = JSON.parse(localStorage.getItem('projectData'));
 
-  if (!projectData) {
+  if (!projectData || !Array.isArray(projectData.data_output)) {
     navigate('/');
     return null;
   }
 
   const downloadProject = async () => {
     const zip = new JSZip();
-    projectData.files.forEach((file) => {
+    projectData.data_output.forEach((file) => {
       zip.file(file.name, file.content);
     });
     const content = await zip.generateAsync({ type: 'blob' });
@@ -21,15 +21,22 @@ export default function Preview() {
     const link = document.createElement('a');
     link.href = url;
     link.download = 'project.zip';
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
   };
 
   return (
-    <div>
+    <div className="max-w-xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">معاينة المشروع</h1>
-      <pre className="bg-gray-200 p-4 mb-4 rounded overflow-auto">
-        {projectData.preview}
-      </pre>
+      <div className="mb-4">
+        {projectData.data_output.map((file, index) => (
+          <div key={index} className="mb-4">
+            <h2 className="font-medium mb-2">{file.name}</h2>
+            <pre className="bg-gray-100 p-2 rounded overflow-auto text-left whitespace-pre-wrap">{file.content}</pre>
+          </div>
+        ))}
+      </div>
       <button
         onClick={downloadProject}
         className="bg-green-500 text-white px-4 py-2 rounded cursor-pointer"
