@@ -13,10 +13,15 @@ export default function Home() {
     try {
       const result = await createEvent('chatgpt_request', {
         prompt: `يرجى إنشاء مشروع متقدم لأداة ذكاء اصطناعي باللغة العربية بناءً على الوصف التالي:\n${description}\n\nيرجى تقديم ملفات المشروع بتنسيق JSON كمصفوفة من الكائنات تحتوي على الخصائص "name" و "content".`,
-        response_type: 'json'
+        response_type: 'json',
       });
-      localStorage.setItem('projectData', JSON.stringify(result));
-      navigate('/preview');
+
+      if (result && result.data_output) {
+        localStorage.setItem('projectData', JSON.stringify(result.data_output));
+        navigate('/preview');
+      } else {
+        console.error('Invalid response format:', result);
+      }
     } catch (error) {
       console.error('Error generating project:', error);
     } finally {
